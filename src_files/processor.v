@@ -22,12 +22,7 @@ module processor(
     ///////////////WIRES AND REGISTERS///////////////
     
     
-    //ALU wires
-    wire [63:0] rs1;
-    wire [63:0] rs2;
     
-    wire [63:0] alu_res;
-    wire        zero;
     
     
     
@@ -204,9 +199,102 @@ module processor(
     
     //////////////////  ID - EXE  Pipeline register  ////////////////////
     
+    //Control signals Outputs to EXE
+    wire            ALUsrc_EXE;
+    wire    [2:0]   ALUOp_EXE;
+    wire    [1:0]   memtoreg_EXE;
+    wire            mem_wr_EXE;
+    wire            bne_EXE;
+    wire            bra_EXE;
+    wire            reg_wr_EXE;
+    wire            reg_dst_EXE;
+    wire            sd_EXE;
+    wire            ld_EXE;
+    wire    [7:0]   wmask_EXE;
+    wire            jump_EXE;
+    
+    //Control bits Outputs to EXE
+    wire    [6:0]   funct7_EXE;
+    wire    [2:0]   funct3_EXE;
+    wire    [6:0]   opcode_EXE;
+    
+    //Immediates Outputs to EXE
+    wire    [31:0]  jal_imm_EXE;
+    wire    [31:0]  jalr_imm_EXE;
+    wire    [31:0]  bra_imm_EXE;
+    wire    [63:0]  addi_imm_EXE;
+    wire    [63:0]  sd_imm_EXE;
+    
+    //Registerfile outputs to EXE
+    wire    [63:0]  reg_rdata1_EXE;
+    wire    [63:0]  reg_rdata2_EXE;
+    
+    
+    
     //Instantiate here
     
+    ID_EX r1(
+         .clk(clk),
+         .nrst(nrst),
+         .ALUsrc(ALUsrc),
+         .ALUOp(ALUOp),
+         .memtoreg(memtoreg),
+         .mem_wr(mem_wr),
+         .bne(bne),
+         .bra(bra),
+         .reg_wr(reg_wr),
+         .reg_dst(reg_dst),
+         .sd(sd),
+         .ld(ld),
+         .wmask(wmask),
+         .jump(jump),
     
+    //Control bits
+         .funct7(funct7),
+         .funct3(funct3),
+         .opcode(opcode),
+    
+    //Immediates
+         .jal_imm(jal_imm),
+         .jalr_imm(jalr_imm),
+         .bra_imm(bra_imm),
+         .addi_imm(addi_imm),
+         .sd_imm(sd_imm),
+    
+    //Registerfile outputs
+         .reg_rdata1(reg_rdata1),
+         .reg_rdata2(reg_rdata2),
+    
+    //Control signals Outputs to EXE
+         .ALUsrc_o(ALUsrc_EXE),
+         .ALUOp_o(ALUOp_EXE),
+         .memtoreg_o(memtoreg_EXE),
+         .mem_wr_o(mem_wr_EXE),
+         .bne_o(bne_EXE),
+         .bra_o(bra_EXE),
+         .reg_wr_o(reg_wr_EXE),
+         .reg_dst_o(reg_dst_EXE),
+         .sd_o(sd_EXE),
+         .ld_o(ld_EXE),
+         .wmask_o(wmask_EXE),
+         .jump_o(jump_EXE),
+    
+    //Control bits Outputs to EXE
+         .funct7_o(funct7_EXE),
+         .funct3_o(funct3_EXE),
+         .opcode_o(opcode_EXE),
+    
+    //Immediates Outputs to EXE
+         .jal_imm_o(jal_imm_EXE),
+         .jalr_imm_o(jalr_imm_EXE),
+         .bra_imm_o(bra_imm_EXE),
+         .addi_imm_o(addi_imm_EXE),
+         .sd_imm_o(sd_imm_EXE),
+    
+    //Registerfile outputs to EXE
+         .reg_rdata1_o(reg_rdata1_EXE),
+         .reg_rdata2_o(reg_rdata2_EXE)
+    );
     //////////////////////////////////////////////////////////////////
     
     
@@ -215,12 +303,18 @@ module processor(
     ////////////////////  Execution (EXE) stage  /////////////////////
     
     //-------------------------ALU-----------------------------
+    //ALU wires
+    wire [63:0] rs1;
+    wire [63:0] rs2;
+    
+    wire [63:0] alu_res;
+    wire        zero;
     
     //Choose source of rs2 (should assert if instruction is Register-Immediate or Load/store operation)
-    assign rs2 = (ALUsrc)? ((sd)? sd_imm: addi_imm) : reg_rdata2;    //Take if 1 Immidiate in I-type/S-type format
+    assign rs2 = (ALUsrc_EXE)? ((sd)? sd_imm_EXE: addi_imm_EXE) : reg_rdata2_EXE;    //Take if 1 Immidiate in I-type/S-type format
                                                                     //else take source from register data
                                                                     
-    assign rs1 = reg_rdata1;                        //Take next operand from register file
+    assign rs1 = reg_rdata1_EXE;                        //Take next operand from register file
     //Instantiation
     ALU a0(
         .Alu_op(ALUOp),
