@@ -21,12 +21,45 @@ module processor(
     
     ///////////////WIRES AND REGISTERS///////////////
     
+    //EXE stage wire placed here since it's used for PC logic
+     //Control signals Outputs to EXE
+    wire    [31:0]  PC_EXE;
+    wire            ALUsrc_EXE;
+    wire    [2:0]   ALUOp_EXE;
+    wire    [1:0]   memtoreg_EXE;
+    wire            mem_wr_EXE;
+    wire            bne_EXE;
+    wire            bra_EXE;
+    wire            reg_wr_EXE;
+    wire            reg_dst_EXE;
+    wire            sd_EXE;
+    wire            ld_EXE;
+    wire    [7:0]   wmask_EXE;
+    wire            jump_EXE;
+    
+    //Control bits Outputs to EXE
+    wire    [6:0]   funct7_EXE;
+    wire    [2:0]   funct3_EXE;
+    wire    [6:0]   opcode_EXE;
+    
+    //Immediates Outputs to EXE
+    wire    [31:0]  jal_imm_EXE;
+    wire    [31:0]  jalr_imm_EXE;
+    wire    [31:0]  bra_imm_EXE;
+    wire    [63:0]  addi_imm_EXE;
+    wire    [63:0]  sd_imm_EXE;
+    
+    //Registerfile outputs to EXE
+    wire    [63:0]  reg_rdata1_EXE;
+    wire    [63:0]  reg_rdata2_EXE;
     
     
+    //ALU wires
+    wire [63:0] rs1;
+    wire [63:0] rs2;
     
-    
-    
-    
+    wire [63:0] alu_res;
+    wire        zero;
     
     
     
@@ -41,7 +74,49 @@ module processor(
    
     // PUT PC LOGIC HERE
     
-   
+   always@(posedge clk)begin
+        if(!nrst) PC <= 32'b0;
+        else begin
+            if(jump_EXE)begin
+                if(opcode_EXE == `JALR) begin
+                    //   if Jalr, move PC to effective address obtained by the sum of the 
+                    //   decoded immediate and address from readdata1 from regfile
+                    
+                    //Notes: 
+                    //  -we take into consideration the sign of the immediate 
+                    //  -we also assume that the register contains a valid 32-bit base address
+                    //   thus we can take the first 32-bits of the register as the operand
+                    
+                    if(jalr_imm_EXE[31] == 1'b1) PC <= reg_rdata1_EXE[31:0] - (~jalr_imm_EXE + 1) ;    
+                    else PC <= jalr_imm_EXE + reg_rdata1_EXE[31:0] ;
+                    
+                end else begin
+                    
+                    //if Jal, add PC with sign extended offset
+                    //Note: we take into consideration the sign 
+                    if(jal_imm_EXE[31] == 1'b1) PC <= PC_EXE - (~jal_imm_EXE + 1);                                 
+                    else PC <= PC_EXE +jal_imm_EXE;
+                end
+            end
+            else begin
+                if(bne_EXE && ~zero) begin
+                    //If BNE and not zero, branch to PC + offset
+                    //Note: we take into consideration the sign of the immediate
+                    if(bra_imm_EXE[31] == 1'b1) PC <= PC - (~bra_imm_EXE + 1);
+                    else PC <= PC + bra_imm_EXE;        
+                    
+                end
+                else if(~bne_EXE && bra_EXE && zero) begin
+                
+                    //else if BEQ (and not BNE) and zero, branch to PC + offset
+                    //Note: we take into consideration the sign of the immediate
+                    if(bra_imm_EXE[31] == 1'b1) PC <= PC_EXE - (~bra_imm_EXE + 1);
+                    else PC <= PC_EXE + bra_imm_EXE;    
+                end
+                else PC <= PC + 3'd4;         //just increment PC if no branch or jump is taken
+            end
+        end
+    end
     
     ////////////////////////////////////////////////////////
     
@@ -199,41 +274,14 @@ module processor(
     
     //////////////////  ID - EXE  Pipeline register  ////////////////////
     
-    //Control signals Outputs to EXE
-    wire            ALUsrc_EXE;
-    wire    [2:0]   ALUOp_EXE;
-    wire    [1:0]   memtoreg_EXE;
-    wire            mem_wr_EXE;
-    wire            bne_EXE;
-    wire            bra_EXE;
-    wire            reg_wr_EXE;
-    wire            reg_dst_EXE;
-    wire            sd_EXE;
-    wire            ld_EXE;
-    wire    [7:0]   wmask_EXE;
-    wire            jump_EXE;
-    
-    //Control bits Outputs to EXE
-    wire    [6:0]   funct7_EXE;
-    wire    [2:0]   funct3_EXE;
-    wire    [6:0]   opcode_EXE;
-    
-    //Immediates Outputs to EXE
-    wire    [31:0]  jal_imm_EXE;
-    wire    [31:0]  jalr_imm_EXE;
-    wire    [31:0]  bra_imm_EXE;
-    wire    [63:0]  addi_imm_EXE;
-    wire    [63:0]  sd_imm_EXE;
-    
-    //Registerfile outputs to EXE
-    wire    [63:0]  reg_rdata1_EXE;
-    wire    [63:0]  reg_rdata2_EXE;
+   
     
     
     
     //Instantiate here
     
     ID_EX r1(
+         .PC(PC),
          .clk(clk),
          .nrst(nrst),
          .ALUsrc(ALUsrc),
@@ -266,6 +314,7 @@ module processor(
          .reg_rdata2(reg_rdata2),
     
     //Control signals Outputs to EXE
+         .PC_o(PC_EXE),
          .ALUsrc_o(ALUsrc_EXE),
          .ALUOp_o(ALUOp_EXE),
          .memtoreg_o(memtoreg_EXE),
@@ -303,12 +352,7 @@ module processor(
     ////////////////////  Execution (EXE) stage  /////////////////////
     
     //-------------------------ALU-----------------------------
-    //ALU wires
-    wire [63:0] rs1;
-    wire [63:0] rs2;
     
-    wire [63:0] alu_res;
-    wire        zero;
     
     //Choose source of rs2 (should assert if instruction is Register-Immediate or Load/store operation)
     assign rs2 = (ALUsrc_EXE)? ((sd)? sd_imm_EXE: addi_imm_EXE) : reg_rdata2_EXE;    //Take if 1 Immidiate in I-type/S-type format

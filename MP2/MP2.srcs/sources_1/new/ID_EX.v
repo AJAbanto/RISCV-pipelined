@@ -8,6 +8,7 @@ module ID_EX(
     
     
     //Control signals
+    input [31:0] PC,
     input        ALUsrc,
     input [2:0]  ALUOp,
     input [1:0]  memtoreg,
@@ -38,6 +39,7 @@ module ID_EX(
     input [63:0] reg_rdata2,
     
     //Control signals Outputs to EXE
+    output  reg [31:0] PC_o,
     output  reg        ALUsrc_o,
     output  reg [2:0]  ALUOp_o,
     output  reg [1:0]  memtoreg_o,
@@ -74,6 +76,7 @@ module ID_EX(
         if(!nrst)begin
             
             //Reset all values
+            PC_o        <= 32'b0;
             ALUsrc_o    <= 0;
             ALUOp_o     <= 3'b0;
             memtoreg_o  <= 2'b0;
@@ -102,6 +105,7 @@ module ID_EX(
     
         end else begin
             //Propagate data through pipeline
+            PC_o        <= PC;
             ALUsrc_o    <= ALUsrc;
             ALUOp_o     <= ALUOp;
             memtoreg_o  <= memtoreg_o;
