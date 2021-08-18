@@ -80,6 +80,7 @@ module ID_EX(
             ALUsrc_o    <= 0;
             ALUOp_o     <= 3'b0;
             memtoreg_o  <= 2'b0;
+            mem_wr_o    <= 0;
             bne_o       <= 0;
             bra_o       <= 0;
             reg_wr_o    <= 0;
@@ -99,8 +100,8 @@ module ID_EX(
             addi_imm_o  <= 64'b0;
             sd_imm_o    <= 64'b0;
             
-            reg_rdata1_o<= 64;b0;
-            reg_rdata2_o<= 64;b0;
+            reg_rdata1_o<= 64'b0;
+            reg_rdata2_o<= 64'b0;
            
     
         end else begin
@@ -109,6 +110,7 @@ module ID_EX(
             ALUsrc_o    <= ALUsrc;
             ALUOp_o     <= ALUOp;
             memtoreg_o  <= memtoreg_o;
+            mem_wr_o    <= mem_wr;
             bne_o       <= bne;
             bra_o       <= bra;
             reg_wr_o    <= reg_wr;

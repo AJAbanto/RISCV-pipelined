@@ -21,7 +21,9 @@ module processor(
     
     ///////////////WIRES AND REGISTERS///////////////
     
-    //EXE stage wire placed here since it's used for PC logic
+    
+    
+    //------------EXE Stage wires-------------------
      //Control signals Outputs to EXE
     wire    [31:0]  PC_EXE;
     wire            ALUsrc_EXE;
@@ -54,7 +56,46 @@ module processor(
     wire    [63:0]  reg_rdata2_EXE;
     
     
-    //ALU wires
+    //------------MEM Stage wires-------------------
+     //Control signals Outputs to MEM
+    wire    [31:0]  PC_MEM;
+    wire    [1:0]   memtoreg_MEM;
+    wire            mem_wr_MEM;
+    wire            reg_wr_MEM;
+    wire    [7:0]   wmask_MEM;
+    
+    //Control bits Outputs to MEM
+    wire    [2:0]   funct3_MEM;
+    
+    //Registerfile outputs to MEM
+    wire    [63:0]  reg_rdata2_MEM;
+    
+    //ALU output to MEM
+    wire    [63:0]  alu_res_MEM;
+   
+   
+   
+    //------------ WB Stage wires-------------------
+     //Control signals Outputs to MEM
+    wire    [31:0]  PC_WB;
+    wire    [1:0]   memtoreg_WB;
+    wire            reg_wr_WB;
+    wire    [7:0]   wmask_WB;
+    
+    //Control bits Outputs to MEM
+    wire    [2:0]   funct3_WB;
+    
+    //Registerfile outputs to MEM
+    wire    [63:0]  reg_rdata2_WB;
+    
+    //ALU output to MEM
+    wire    [63:0]  alu_res_WB;
+    
+    //Memory output to WB
+    wire    [63:0]  rdata_WB;
+    
+    
+    //------------ALU wires-------------------
     wire [63:0] rs1;
     wire [63:0] rs2;
     
@@ -63,9 +104,9 @@ module processor(
     
     
     
-    //Data memory wires and registers
-    reg  [31:0] addr_o;
     
+    assign wmask = wmask_MEM; //attach wmask output to wmask from MEM stage
+    assign wr_en = mem_wr_MEM;//attach wr_en output to mem_wr from MEM stage
     
     ////////////Instruction Fetch (IF) stage ///////////////
 
@@ -187,21 +228,21 @@ module processor(
     wire        reg_dst;
     wire        sd;
     wire        jump;
-    
-    
+    wire [7:0]  wmask_o;
+    wire        mem_wr;
     //Instantiation 
     control c0(
         .instr(inst_IFID),
         .ALUsrc(ALUsrc),
         .ALUOp(ALUOp),
         .memtoreg(memtoreg),
-        .mem_wr(wr_en),
+        .mem_wr(mem_wr),
         .bne(bne),
         .bra(bra),
         .reg_wr(reg_wr),
         .reg_dst(reg_dst),
         .sd(sd),
-        .wmask(wmask),
+        .wmask(wmask_o),
         .jump(jump)
     );
     
@@ -247,35 +288,13 @@ module processor(
     assign reg_wrdata_in = reg_wrdata;
     
     
-    //Logic for choosing data to write back to register
-    always@(*)begin
-        case(memtoreg)
-            2'b00: reg_wrdata <= alu_res;   //get writeback data from alu
-            
-            /////////////////Write back data from Data mem///////////////
-            2'b01:begin
-                case(funct3)
-                    `LD:    reg_wrdata <= rdata;                            //get all 64-bits (double word)
-                    `LW:    reg_wrdata <= {{32{rdata[31]}},rdata[31:0]};    //get only 32-bits and sign extend the rest
-                    `LH:    reg_wrdata <= {{48{rdata[15]}},rdata[15:0]};    //get only 16-bits and sign extend the rest
-                    `LWU:   reg_wrdata <= {32'b0,rdata[31:0]};              //get only 32-bits and pad 0 the rest
-                    `LHU:   reg_wrdata <= {48'b0,rdata[15:0]};              //get only 16-bits and pad 0 the rest
-                endcase
-            end
-            ////////////////////////////////////////////////////////////
-            
-            2'b10: reg_wrdata <= PC + 3'd4; //get writeback data from (PC + 4) 
-        endcase
-    end
+    
     
     ///////////////////////////////////////////////////////////////////
     
     
     
     //////////////////  ID - EXE  Pipeline register  ////////////////////
-    
-   
-    
     
     
     //Instantiate here
@@ -294,7 +313,7 @@ module processor(
          .reg_dst(reg_dst),
          .sd(sd),
          .ld(ld),
-         .wmask(wmask),
+         .wmask(wmask_o),
          .jump(jump),
     
     //Control bits
@@ -371,19 +390,116 @@ module processor(
     
     /////////////////////////////////////////////////////////////////////
     
+    //////////////////  EXE - MEM  Pipeline register  ////////////////////
+    
+    
+    EX_MEM r2(
+        .PC(PC_EXE),
+        .clk(clk),
+        .nrst(nrst),
+        .memtoreg(memtoreg_EXE),
+        .mem_wr(mem_wr_EXE),
+        .reg_wr(reg_wr_EXE),
+        .wmask(wmask_EXE),
+        .funct3(funct3_EXE),
+        .reg_rdata2(reg_rdata2_EXE),
+        .alu_res(alu_res),
+    
    
+    //ALU  output to MEM
+        .alu_res_o(alu_res_MEM),
+    //Control signals Outputs to MEM
+        .PC_o(PC_MEM),
+        .memtoreg_o(memtoreg_MEM),
+        .mem_wr_o(mem_wr_MEM),
+        .reg_wr_o(reg_wr_MEM),
+        .wmask_o(wmask_MEM),
+    
+    //Control bits Outputs to MEM
+        .funct3_o(funct3_MEM),
+    
+    //Registerfile outputs to MEM
+        .reg_rdata2_o(reg_rdata2_MEM)
+    );
+    
+    
+    //////////////////////////////////////////////////////////////////////
+       
    ////////////////////  Memory access (MEM) stage  /////////////////////
     
   
     
-    //----------------Data memory------------
+    //------------------Data memory--------------
+    //---DATA MEMORY CONNECTED TO EXTERNA PORT---
+    //-------------------------------------------
     
     //Load and store operations (address comes from rs1 + imm) 
-    assign addr = alu_res[31:0];
+    assign addr = alu_res_MEM[31:0];
 
     //connect rs2 as source register for storeword instruction
-    assign wdata = reg_rdata2;
+    assign wdata = reg_rdata2_MEM;
     
     
-    /////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+    
+    
+    
+    //////////////////  MEM - WB   Pipeline register  ////////////////////
+    
+    MEM_WB r3(
+        .PC(PC_MEM),
+        .clk(clk),
+        .nrst(nrst),
+        .memtoreg(memtoreg_MEM),
+        .reg_wr(reg_wr_MEM),
+        .funct3(funct3_MEM),
+        .reg_rdata2(reg_rdata2_MEM),
+        .alu_res(alu_res_MEM),
+        .rdata(rdata),
+   
+    //ALU and MEM output to WB
+        .alu_res_o(alu_res_WB),
+        .rdata_o(rdata_WB),
+        
+    //Control signals Outputs to MEM
+        .PC_o(PC_WB),
+        .memtoreg_o(memtoreg_WB),
+        .reg_wr_o(reg_wr_WB),
+    
+    //Control bits Outputs to MEM
+        .funct3_o(funct3_WB)
+    );
+    
+    
+    
+    
+    /////////////////////////////////////////////////////////////////////
+    
+        
+   //////////////////////  Write Back (WB) stage  ///////////////////////    
+    
+    
+    //Logic for choosing data to write back to register
+    always@(*)begin
+        case(memtoreg_WB)
+            2'b00: reg_wrdata <= alu_res_WB;   //get writeback data from alu
+            
+            /////////////////Write back data from Data mem///////////////
+            2'b01:begin
+                case(funct3_WB)
+                    `LD:    reg_wrdata <= rdata_WB;                            //get all 64-bits (double word)
+                    `LW:    reg_wrdata <= {{32{rdata_WB[31]}},rdata_WB[31:0]};    //get only 32-bits and sign extend the rest
+                    `LH:    reg_wrdata <= {{48{rdata_WB[15]}},rdata_WB[15:0]};    //get only 16-bits and sign extend the rest
+                    `LWU:   reg_wrdata <= {32'b0,rdata_WB[31:0]};              //get only 32-bits and pad 0 the rest
+                    `LHU:   reg_wrdata <= {48'b0,rdata_WB[15:0]};              //get only 16-bits and pad 0 the rest
+                endcase
+            end
+            ////////////////////////////////////////////////////////////
+            
+            2'b10: reg_wrdata <= PC_WB + 3'd4; //get writeback data from (PC + 4) 
+        endcase
+    end
+    
+    /////////////////////////////////////////////////////////////////////
+
 endmodule

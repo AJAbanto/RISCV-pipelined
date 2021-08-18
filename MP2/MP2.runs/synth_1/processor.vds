@@ -1,0 +1,49 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:47 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Thu Aug 19 01:56:12 2021
+# Process ID: 34481
+# Current directory: /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.runs/synth_1
+# Command line: vivado -log processor.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source processor.tcl
+# Log file: /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.runs/synth_1/processor.vds
+# Journal file: /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.runs/synth_1/vivado.jou
+#-----------------------------------------------------------
+source processor.tcl -notrace
+Command: synth_design -top processor -part xc7a35ticsg324-1L
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35ti'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35ti'
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 34592
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:07 ; elapsed = 00:00:10 . Memory (MB): peak = 2285.844 ; gain = 0.000 ; free physical = 175 ; free virtual = 4829
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'processor' [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/processor.v:3]
+INFO: [Synth 8-6157] synthesizing module 'IF_ID' [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.srcs/sources_1/new/IF_ID.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'IF_ID' (1#1) [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.srcs/sources_1/new/IF_ID.v:23]
+INFO: [Synth 8-6157] synthesizing module 'control' [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/control.v:7]
+INFO: [Synth 8-155] case statement is not full and has no default [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/control.v:81]
+INFO: [Synth 8-155] case statement is not full and has no default [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/control.v:185]
+WARNING: [Synth 8-567] referenced signal 'opcode' should be on the sensitivity list [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/control.v:63]
+WARNING: [Synth 8-567] referenced signal 'funct3' should be on the sensitivity list [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/control.v:63]
+WARNING: [Synth 8-567] referenced signal 'funct7' should be on the sensitivity list [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/control.v:63]
+INFO: [Synth 8-6155] done synthesizing module 'control' (2#1) [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/control.v:7]
+WARNING: [Synth 8-7071] port 'ld' of module 'control' is unconnected for instance 'c0' [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/processor.v:234]
+WARNING: [Synth 8-7023] instance 'c0' of module 'control' has 13 connections declared, but only 12 given [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/processor.v:234]
+INFO: [Synth 8-6157] synthesizing module 'regfile' [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/regfile.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'regfile' (3#1) [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/regfile.v:3]
+INFO: [Synth 8-6157] synthesizing module 'ID_EX' [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.srcs/sources_1/new/ID_EX.v:4]
+ERROR: [Synth 8-36] 'b0' is not declared [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.srcs/sources_1/new/ID_EX.v:103]
+ERROR: [Synth 8-6156] failed synthesizing module 'ID_EX' [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.srcs/sources_1/new/ID_EX.v:4]
+ERROR: [Synth 8-6156] failed synthesizing module 'processor' [/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/processor.v:3]
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:09 ; elapsed = 00:00:13 . Memory (MB): peak = 2285.844 ; gain = 0.000 ; free physical = 950 ; free virtual = 5613
+---------------------------------------------------------------------------------
+synthesize failed
+INFO: [Common 17-83] Releasing license: Synthesis
+15 Infos, 5 Warnings, 0 Critical Warnings and 4 Errors encountered.
+synth_design failed
+ERROR: [Common 17-69] Command failed: Vivado Synthesis failed
+INFO: [Common 17-206] Exiting Vivado at Thu Aug 19 01:56:43 2021...
