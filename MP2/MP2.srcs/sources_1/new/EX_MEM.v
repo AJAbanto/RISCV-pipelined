@@ -15,6 +15,7 @@ module EX_MEM(
     input        [63:0]  alu_res,
     input        [63:0]  reg_rdata2,
     input                reg_wr,
+    input        [4:0]   reg_wr_addr,
     
     output  reg  [31:0]  PC_o,
     output  reg  [2:0]   funct3_o,
@@ -23,7 +24,8 @@ module EX_MEM(
     output  reg  [7:0]   wmask_o,
     output  reg  [63:0]  alu_res_o,
     output  reg  [63:0]  reg_rdata2_o,
-    output  reg          reg_wr_o
+    output  reg          reg_wr_o,
+    output  reg  [4:0]   reg_wr_addr_o
     
     );
     
@@ -39,6 +41,7 @@ module EX_MEM(
             alu_res_o   <=  64'b0;
             reg_rdata2_o <=  64'b0;
             reg_wr_o    <=  0;
+            reg_wr_addr_o <= 5'b0;
         end else begin
         
             //Propagate values through to MEM stage
@@ -50,6 +53,7 @@ module EX_MEM(
             alu_res_o   <=  alu_res;
             reg_rdata2_o <=  reg_rdata2;
             reg_wr_o    <=  reg_wr;
+            reg_wr_addr_o <= reg_wr_addr;
         end
     end
 endmodule

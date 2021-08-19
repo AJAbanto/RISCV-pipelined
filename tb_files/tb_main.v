@@ -81,7 +81,7 @@ module tb_main();
         nrst <= 0;
         #(`CLK_PERIOD / 2);
         nrst <= 1;
-        #(`CLK_PERIOD * 20);    //run for 20 clock cycles
+        #(`CLK_PERIOD * 100);    //run for 100 clock cycles
     end
     
     

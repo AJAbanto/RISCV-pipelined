@@ -16,6 +16,7 @@ module ID_EX(
     input        bne,
     input        bra,
     input        reg_wr,
+    input [4:0]  reg_wr_addr,
     input        reg_dst,
     input        sd,
     input        ld,       
@@ -47,6 +48,7 @@ module ID_EX(
     output  reg        bne_o,
     output  reg        bra_o,
     output  reg        reg_wr_o,
+    output  reg [4:0]  reg_wr_addr_o,
     output  reg        reg_dst_o,
     output  reg        sd_o,
     output  reg        ld_o,
@@ -84,6 +86,7 @@ module ID_EX(
             bne_o       <= 0;
             bra_o       <= 0;
             reg_wr_o    <= 0;
+            reg_wr_addr_o <= 5'b0;
             reg_dst_o   <= 0;
             sd_o        <= 0;
             ld_o        <= 0;
@@ -109,11 +112,12 @@ module ID_EX(
             PC_o        <= PC;
             ALUsrc_o    <= ALUsrc;
             ALUOp_o     <= ALUOp;
-            memtoreg_o  <= memtoreg_o;
+            memtoreg_o  <= memtoreg;
             mem_wr_o    <= mem_wr;
             bne_o       <= bne;
             bra_o       <= bra;
             reg_wr_o    <= reg_wr;
+            reg_wr_addr_o <= reg_wr_addr;
             reg_dst_o   <= reg_dst;
             sd_o        <= sd;
             ld_o        <= ld;

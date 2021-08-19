@@ -33,6 +33,7 @@ module processor(
     wire            bne_EXE;
     wire            bra_EXE;
     wire            reg_wr_EXE;
+    wire    [4:0]   reg_wr_addr_EXE;
     wire            reg_dst_EXE;
     wire            sd_EXE;
     wire            ld_EXE;
@@ -62,6 +63,7 @@ module processor(
     wire    [1:0]   memtoreg_MEM;
     wire            mem_wr_MEM;
     wire            reg_wr_MEM;
+    wire    [4:0]   reg_wr_addr_MEM;
     wire    [7:0]   wmask_MEM;
     
     //Control bits Outputs to MEM
@@ -80,6 +82,7 @@ module processor(
     wire    [31:0]  PC_WB;
     wire    [1:0]   memtoreg_WB;
     wire            reg_wr_WB;
+    wire    [4:0]   reg_wr_addr_WB;
     wire    [7:0]   wmask_WB;
     
     //Control bits Outputs to MEM
@@ -260,6 +263,7 @@ module processor(
     wire [63:0] reg_wrdata_in;
     reg  [63:0] reg_wrdata;
     
+    assign reg_wrdata_in = reg_wrdata;
     
     //Register read address
     assign reg_rd_addr1 = inst_IFID[19:15];
@@ -273,8 +277,8 @@ module processor(
         .clk(clk),
         .nrst(nrst),
         
-        .wr_en(reg_wr),   //Should use reg write from WB pipeline register
-        .wr_addr(reg_wr_addr),
+        .wr_en(reg_wr_WB),   //Should use reg write from WB pipeline register
+        .wr_addr(reg_wr_addr_WB),
         .wrdata(reg_wrdata_in),
         
         .rd_addr1(reg_rd_addr1),
@@ -285,7 +289,7 @@ module processor(
     );
     
     
-    assign reg_wrdata_in = reg_wrdata;
+    
     
     
     
@@ -310,6 +314,7 @@ module processor(
          .bne(bne),
          .bra(bra),
          .reg_wr(reg_wr),
+         .reg_wr_addr(reg_wr_addr),
          .reg_dst(reg_dst),
          .sd(sd),
          .ld(ld),
@@ -341,6 +346,7 @@ module processor(
          .bne_o(bne_EXE),
          .bra_o(bra_EXE),
          .reg_wr_o(reg_wr_EXE),
+         .reg_wr_addr_o(reg_wr_addr_EXE),
          .reg_dst_o(reg_dst_EXE),
          .sd_o(sd_EXE),
          .ld_o(ld_EXE),
@@ -374,13 +380,13 @@ module processor(
     
     
     //Choose source of rs2 (should assert if instruction is Register-Immediate or Load/store operation)
-    assign rs2 = (ALUsrc_EXE)? ((sd)? sd_imm_EXE: addi_imm_EXE) : reg_rdata2_EXE;    //Take if 1 Immidiate in I-type/S-type format
+    assign rs2 = (ALUsrc_EXE)? ((sd_EXE)? sd_imm_EXE: addi_imm_EXE) : reg_rdata2_EXE;    //Take if 1 Immidiate in I-type/S-type format
                                                                     //else take source from register data
                                                                     
     assign rs1 = reg_rdata1_EXE;                        //Take next operand from register file
     //Instantiation
     ALU a0(
-        .Alu_op(ALUOp),
+        .Alu_op(ALUOp_EXE),
         .rs1(rs1),
         .rs2(rs2),
         .zero(zero),
@@ -400,6 +406,7 @@ module processor(
         .memtoreg(memtoreg_EXE),
         .mem_wr(mem_wr_EXE),
         .reg_wr(reg_wr_EXE),
+        .reg_wr_addr(reg_wr_addr_EXE),
         .wmask(wmask_EXE),
         .funct3(funct3_EXE),
         .reg_rdata2(reg_rdata2_EXE),
@@ -413,6 +420,7 @@ module processor(
         .memtoreg_o(memtoreg_MEM),
         .mem_wr_o(mem_wr_MEM),
         .reg_wr_o(reg_wr_MEM),
+        .reg_wr_addr_o(reg_wr_addr_MEM),
         .wmask_o(wmask_MEM),
     
     //Control bits Outputs to MEM
@@ -452,6 +460,7 @@ module processor(
         .nrst(nrst),
         .memtoreg(memtoreg_MEM),
         .reg_wr(reg_wr_MEM),
+        .reg_wr_addr(reg_wr_addr_MEM),
         .funct3(funct3_MEM),
         .reg_rdata2(reg_rdata2_MEM),
         .alu_res(alu_res_MEM),
@@ -465,6 +474,7 @@ module processor(
         .PC_o(PC_WB),
         .memtoreg_o(memtoreg_WB),
         .reg_wr_o(reg_wr_WB),
+        .reg_wr_addr_o(reg_wr_addr_WB),
     
     //Control bits Outputs to MEM
         .funct3_o(funct3_WB)
