@@ -4,7 +4,22 @@ Running: /home/aj/Vivado/2020.2/bin/unwrapped/lnx64.o/xelab -wto 33df6d03e8714a9
 Using 8 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
-WARNING: [VRFC 10-3091] actual bit length 2 differs from formal bit length 3 for port 'memtoreg' [/home/aj/Desktop/RISCV-pipelined/src_files/processor.v:461]
-WARNING: [VRFC 10-3091] actual bit length 2 differs from formal bit length 3 for port 'memtoreg_o' [/home/aj/Desktop/RISCV-pipelined/src_files/processor.v:475]
+WARNING: [VRFC 10-3091] actual bit length 2 differs from formal bit length 3 for port 'memtoreg' [/home/aj/Desktop/RISCV-pipelined/src_files/processor.v:470]
+WARNING: [VRFC 10-3091] actual bit length 2 differs from formal bit length 3 for port 'memtoreg_o' [/home/aj/Desktop/RISCV-pipelined/src_files/processor.v:484]
 Completed static elaboration
-INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.IF_ID
+Compiling module xil_defaultlib.control
+Compiling module xil_defaultlib.regfile
+Compiling module xil_defaultlib.ID_EX
+Compiling module xil_defaultlib.ALU
+Compiling module xil_defaultlib.EX_MEM
+Compiling module xil_defaultlib.MEM_WB
+Compiling module xil_defaultlib.processor
+Compiling module xil_defaultlib.mem_model
+Compiling module xil_defaultlib.mem_prog
+Compiling module xil_defaultlib.tb_main
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot tb_main_behav

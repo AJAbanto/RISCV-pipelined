@@ -1,10 +1,10 @@
 # compile verilog/system verilog design source files
-verilog xil_defaultlib  \
+verilog xil_defaultlib  --include "../../../../../src_files" \
 "../../../../../src_files/ALU.v" \
-"../../../../MP2.srcs/sources_1/new/EX_MEM.v" \
-"../../../../MP2.srcs/sources_1/new/ID_EX.v" \
-"../../../../MP2.srcs/sources_1/new/IF_ID.v" \
-"../../../../MP2.srcs/sources_1/new/MEM_WB.v" \
+"../../../../../src_files/EX_MEM.v" \
+"../../../../../src_files/ID_EX.v" \
+"../../../../../src_files/IF_ID.v" \
+"../../../../../src_files/MEM_WB.v" \
 "../../../../../src_files/control.v" \
 "../../../../../provided_files/memory_model/mem_model.v" \
 "../../../../../provided_files/memory_model/mem_prog.v" \

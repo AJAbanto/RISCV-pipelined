@@ -26,7 +26,11 @@ module tb_main();
     wire    [63:0]  wdata;
     wire    [7:0]   wmask;
     wire    [63:0]  rdata;
-    
+    wire    [63:0]  ALUOp1;
+    wire    [63:0]  ALUOp2;
+    wire    [63:0]  ALUres;
+    wire    [63:0]  RFwrdata;
+    wire            RFwren;
     
     //data memory module parameters
     parameter       MEM_DATA_DEPTH      = 512;
@@ -47,7 +51,12 @@ module tb_main();
         .wr_en(wr_en),
         .wdata(wdata),
         .wmask(wmask),
-        .rdata(rdata)
+        .rdata(rdata),
+        .ALUop1(ALUOp1),
+        .ALUop2(ALUOp2),
+        .ALUres(ALUres),
+        .RFwrdata(RFwrdata),
+        .RFwren(RFwren)
     );
     
     
@@ -81,7 +90,7 @@ module tb_main();
         nrst <= 0;
         #(`CLK_PERIOD / 2);
         nrst <= 1;
-        #(`CLK_PERIOD * 100);    //run for 100 clock cycles
+        #(`CLK_PERIOD * 300);    //run for 300 clock cycles
     end
     
     

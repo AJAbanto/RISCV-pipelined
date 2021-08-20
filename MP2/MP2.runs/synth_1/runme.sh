@@ -20,7 +20,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.runs/synth_1'
+HD_PWD='/home/aj/Desktop/RISCV-pipelined/MP2/MP2.runs/synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log

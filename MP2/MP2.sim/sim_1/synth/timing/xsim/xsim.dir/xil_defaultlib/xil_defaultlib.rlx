@@ -1,0 +1,8 @@
+0.7
+2020.2
+Nov 18 2020
+09:20:35
+/home/aj/Desktop/RISCV-pipelined/MP2/MP2.sim/sim_1/synth/timing/xsim/tb_main_time_synth.v,1629438366,verilog,,/home/aj/Desktop/RISCV-pipelined/provided_files/memory_model/mem_model.v,,ALU;EX_MEM;ID_EX;IF_ID;MEM_WB;control;glbl;processor;regfile,,,../../../../../../src_files,,,,,
+/home/aj/Desktop/RISCV-pipelined/provided_files/memory_model/mem_model.v,1629383622,verilog,,/home/aj/Desktop/RISCV-pipelined/provided_files/memory_model/mem_prog.v,,mem_model,,,../../../../../../src_files,,,,,
+/home/aj/Desktop/RISCV-pipelined/provided_files/memory_model/mem_prog.v,1629383622,verilog,,/home/aj/Desktop/RISCV-pipelined/tb_files/tb_main.v,,mem_prog,,,../../../../../../src_files,,,,,
+/home/aj/Desktop/RISCV-pipelined/tb_files/tb_main.v,1629436439,verilog,,,,tb_main,,,../../../../../../src_files,,,,,

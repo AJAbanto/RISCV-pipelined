@@ -2,11 +2,11 @@
 # Vivado v2020.2 (64-bit)
 # SW Build 3064766 on Wed Nov 18 09:12:47 MST 2020
 # IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
-# Start of session at: Thu Aug 19 01:56:12 2021
-# Process ID: 34481
-# Current directory: /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.runs/synth_1
+# Start of session at: Fri Aug 20 13:43:24 2021
+# Process ID: 29744
+# Current directory: /home/aj/Desktop/RISCV-pipelined/MP2/MP2.runs/synth_1
 # Command line: vivado -log processor.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source processor.tcl
-# Log file: /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.runs/synth_1/processor.vds
-# Journal file: /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.runs/synth_1/vivado.jou
+# Log file: /home/aj/Desktop/RISCV-pipelined/MP2/MP2.runs/synth_1/processor.vds
+# Journal file: /home/aj/Desktop/RISCV-pipelined/MP2/MP2.runs/synth_1/vivado.jou
 #-----------------------------------------------------------
 source processor.tcl -notrace

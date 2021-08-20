@@ -1,15 +1,21 @@
-addi t1, zero, 300
-nop
+
+#this file is intentend to be used for quick unit tests
+#current unit test doesnt work
+addi t1, zero, 100
 nop
 nop
 nop
 nop
 
-addi t2, zero, 200
+jalr t5, zero, 32
 nop
+nop
+
+addi t2, t2, 50
 nop
 nop
 nop
 nop
 
-sub t3, t1, t2
+branch_works:
+addi t2, t2, 100

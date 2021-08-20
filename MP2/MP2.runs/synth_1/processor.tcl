@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "/media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.runs/synth_1/processor.tcl"
+  variable script "/home/aj/Desktop/RISCV-pipelined/MP2/MP2.runs/synth_1/processor.tcl"
   variable category "vivado_synth"
 }
 
@@ -76,25 +76,27 @@ create_project -in_memory -part xc7a35ticsg324-1L
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
-set_property webtalk.parent_dir /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.cache/wt [current_project]
-set_property parent.project_path /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.xpr [current_project]
+set_property webtalk.parent_dir /home/aj/Desktop/RISCV-pipelined/MP2/MP2.cache/wt [current_project]
+set_property parent.project_path /home/aj/Desktop/RISCV-pipelined/MP2/MP2.xpr [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
 set_property board_part_repo_paths {/home/aj/.Xilinx/Vivado/2020.2/xhub/board_store/xilinx_board_store} [current_project]
 set_property board_part digilentinc.com:arty-a7-35:part0:1.0 [current_project]
-set_property ip_output_repo /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.cache/ip [current_project]
+set_property ip_output_repo /home/aj/Desktop/RISCV-pipelined/MP2/MP2.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
+read_verilog /home/aj/Desktop/RISCV-pipelined/src_files/def.h
+set_property file_type "Verilog Header" [get_files /home/aj/Desktop/RISCV-pipelined/src_files/def.h]
 read_verilog -library xil_defaultlib {
-  /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/ALU.v
-  /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.srcs/sources_1/new/EX_MEM.v
-  /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.srcs/sources_1/new/ID_EX.v
-  /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.srcs/sources_1/new/IF_ID.v
-  /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/MP2/MP2.srcs/sources_1/new/MEM_WB.v
-  /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/control.v
-  /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/regfile.v
-  /media/aj/Main_drive/Main_storage/Alfred/Ubuntu_storage/RISCV-pipelined/src_files/processor.v
+  /home/aj/Desktop/RISCV-pipelined/src_files/ALU.v
+  /home/aj/Desktop/RISCV-pipelined/src_files/EX_MEM.v
+  /home/aj/Desktop/RISCV-pipelined/src_files/ID_EX.v
+  /home/aj/Desktop/RISCV-pipelined/src_files/IF_ID.v
+  /home/aj/Desktop/RISCV-pipelined/src_files/MEM_WB.v
+  /home/aj/Desktop/RISCV-pipelined/src_files/control.v
+  /home/aj/Desktop/RISCV-pipelined/src_files/regfile.v
+  /home/aj/Desktop/RISCV-pipelined/src_files/processor.v
 }
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being

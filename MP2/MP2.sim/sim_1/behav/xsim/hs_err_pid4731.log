@@ -1,0 +1,16 @@
+#
+# An unexpected error has occurred (11)
+#
+Stack:
+/home/aj/Vivado/2020.2/tps/lnx64/jre11.0.2/lib//server/libjvm.so(+0xc04c3b) [0x7f7adde34c3b]
+/home/aj/Vivado/2020.2/tps/lnx64/jre11.0.2/lib//server/libjvm.so(JVM_handle_linux_signal+0x29d) [0x7f7adde39a2d]
+/home/aj/Vivado/2020.2/tps/lnx64/jre11.0.2/lib//server/libjvm.so(+0xbfd538) [0x7f7adde2d538]
+/lib/x86_64-linux-gnu/libc.so.6(+0x46210) [0x7f7b33b16210]
+/home/aj/Vivado/2020.2/lib/lnx64.o/librdi_simbridge_kernel.so(SimBridge::WdbAddressBTreeManagerImp::storeEvent(long long, long long, unsigned char)+0xb8) [0x7f7ae49e2b38]
+/home/aj/Vivado/2020.2/lib/lnx64.o/librdi_simbridge_kernel.so(+0x51013) [0x7f7ae49e9013]
+/home/aj/Vivado/2020.2/lib/lnx64.o/librdi_simbridge_kernel.so(SimBridge::WdbAddressBTreeManagerImp::addLiveEvent(SimBridge::WdbLiveEvent const*, std::function<void (long long, long long, unsigned char)> const&)+0xb1) [0x7f7ae49e3701]
+/home/aj/Vivado/2020.2/lib/lnx64.o/librdi_simbridge_kernel.so(SimBridge::WdbAddressBTreeManager::addEventBuffered(SimBridge::WdbLiveEvent const*)+0x68) [0x7f7ae49e37a8]
+/home/aj/Vivado/2020.2/lib/lnx64.o/librdi_simbridge_kernel.so(SimBridge::WdbSharedMemReader::runReadThread(SimBridge::WdbIEventBlockDatabase*)+0x7d) [0x7f7ae4a10dbd]
+/home/aj/Vivado/2020.2/lib/lnx64.o/libboost_thread.so(+0xfa0d) [0x7f7b323bfa0d]
+/lib/x86_64-linux-gnu/libpthread.so.0(+0x9609) [0x7f7b33ab1609]
+/lib/x86_64-linux-gnu/libc.so.6(clone+0x43) [0x7f7b33bf2293]

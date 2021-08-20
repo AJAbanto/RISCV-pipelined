@@ -108,8 +108,14 @@ module processor(
     
     
     
-    assign wmask = wmask_MEM; //attach wmask output to wmask from MEM stage
-    assign wr_en = mem_wr_MEM;//attach wr_en output to mem_wr from MEM stage
+    //----------Output wires------------------
+    assign wmask = wmask_MEM;   //attach wmask output to wmask from MEM stage
+    assign wr_en = mem_wr_MEM;  //attach wr_en output to mem_wr from MEM stage
+    assign ALUOp1 = rs1;        //attach ALUOp outputs to ALU wires in EXE stage
+    assign ALUOp2 = rs2;
+    assign ALUres = alu_res;    //attach ALUres output to ALU result in EXE stage
+    assign RFwren = reg_wr_WB;  //attach RegFile output to writeback output from WB
+    
     
     ////////////Instruction Fetch (IF) stage ///////////////
 
@@ -146,8 +152,8 @@ module processor(
                 if(bne_EXE && ~zero) begin
                     //If BNE and not zero, branch to PC + offset
                     //Note: we take into consideration the sign of the immediate
-                    if(bra_imm_EXE[31] == 1'b1) PC <= PC - (~bra_imm_EXE + 1);
-                    else PC <= PC + bra_imm_EXE;        
+                    if(bra_imm_EXE[31] == 1'b1) PC <= PC_EXE - (~bra_imm_EXE + 1);
+                    else PC <= PC_EXE + bra_imm_EXE;        
                     
                 end
                 else if(~bne_EXE && bra_EXE && zero) begin
@@ -201,7 +207,7 @@ module processor(
     //32-bit wires for branch instructions
     assign jal_imm  = {{12{inst_IFID[31]}}, {inst_IFID[31],inst_IFID[19:12],inst_IFID[20],inst_IFID[30:21],1'b0}};  // decodes SB-type format instruction encoding 
     assign jalr_imm = {{20{inst_IFID[31]}}, {inst_IFID[31:20]}};                                                    // decodes I-type format instruction encoding
-    assign bra_imm  = {{19{inst_IFID[31]}}, {inst_IFID[31],inst[7],inst_IFID[30:25],inst_IFID[11:8],1'b0}};         // decodes B-type format instruction encoding
+    assign bra_imm  = {{19{inst_IFID[31]}}, {inst_IFID[31],inst_IFID[7],inst_IFID[30:25],inst_IFID[11:8],1'b0}};         // decodes B-type format instruction encoding
     
     //64-bit wires for load/store and addi instructions
     assign addi_imm = {{52{inst_IFID[31]}}, {inst_IFID[31:20]}};                                                    // decodes I-type format instruction encoding 
@@ -220,7 +226,6 @@ module processor(
    
     
     //----------------Control block-------------------------
-    
     //Control signal wires
     wire        ALUsrc;
     wire [2:0]  ALUOp;
@@ -233,6 +238,7 @@ module processor(
     wire        jump;
     wire [7:0]  wmask_o;
     wire        mem_wr;
+   
     //Instantiation 
     control c0(
         .instr(inst_IFID),
@@ -262,6 +268,9 @@ module processor(
     //for connecting to register that actually stores the data
     wire [63:0] reg_wrdata_in;
     reg  [63:0] reg_wrdata;
+    
+    
+    assign RFwrdata = reg_wrdata; //attach RegFile output to writeback output from WB
     
     assign reg_wrdata_in = reg_wrdata;
     
@@ -304,7 +313,7 @@ module processor(
     //Instantiate here
     
     ID_EX r1(
-         .PC(PC),
+         .PC(PC_IFID),
          .clk(clk),
          .nrst(nrst),
          .ALUsrc(ALUsrc),

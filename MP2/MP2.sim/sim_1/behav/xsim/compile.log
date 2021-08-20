@@ -1,0 +1,25 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/aj/Desktop/RISCV-pipelined/src_files/ALU.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ALU
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/aj/Desktop/RISCV-pipelined/src_files/EX_MEM.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module EX_MEM
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/aj/Desktop/RISCV-pipelined/src_files/ID_EX.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ID_EX
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/aj/Desktop/RISCV-pipelined/src_files/IF_ID.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IF_ID
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/aj/Desktop/RISCV-pipelined/src_files/MEM_WB.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module MEM_WB
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/aj/Desktop/RISCV-pipelined/src_files/control.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module control
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/aj/Desktop/RISCV-pipelined/provided_files/memory_model/mem_model.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_model
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/aj/Desktop/RISCV-pipelined/provided_files/memory_model/mem_prog.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_prog
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/aj/Desktop/RISCV-pipelined/src_files/processor.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module processor
+INFO: [VRFC 10-2458] undeclared symbol ALUOp1, assumed default net type wire [/home/aj/Desktop/RISCV-pipelined/src_files/processor.v:114]
+INFO: [VRFC 10-2458] undeclared symbol ALUOp2, assumed default net type wire [/home/aj/Desktop/RISCV-pipelined/src_files/processor.v:115]
+INFO: [VRFC 10-2458] undeclared symbol ld, assumed default net type wire [/home/aj/Desktop/RISCV-pipelined/src_files/processor.v:329]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/aj/Desktop/RISCV-pipelined/src_files/regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module regfile
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/aj/Desktop/RISCV-pipelined/tb_files/tb_main.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_main

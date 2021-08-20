@@ -1,0 +1,16 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/aj/Desktop/RISCV-pipelined/MP2/MP2.sim/sim_1/synth/timing/xsim/tb_main_time_synth.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ALU
+INFO: [VRFC 10-311] analyzing module EX_MEM
+INFO: [VRFC 10-311] analyzing module ID_EX
+INFO: [VRFC 10-311] analyzing module IF_ID
+INFO: [VRFC 10-311] analyzing module MEM_WB
+INFO: [VRFC 10-311] analyzing module control
+INFO: [VRFC 10-311] analyzing module processor
+INFO: [VRFC 10-311] analyzing module regfile
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/aj/Desktop/RISCV-pipelined/provided_files/memory_model/mem_model.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_model
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/aj/Desktop/RISCV-pipelined/provided_files/memory_model/mem_prog.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_prog
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/aj/Desktop/RISCV-pipelined/tb_files/tb_main.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_main
